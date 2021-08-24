@@ -1,5 +1,0 @@
-- name: Disable swap
-  sysctl:
-    name: vm.swappiness
-    value: '0'
-    state: present

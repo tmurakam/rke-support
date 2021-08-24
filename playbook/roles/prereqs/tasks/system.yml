@@ -1,0 +1,17 @@
+- name: Disable swap
+  sysctl:
+    name: vm.swappiness
+    value: '0'
+    state: present
+
+- name: Enable bridge-nf-call tables
+  sysctl:
+    name: "{{ item }}"
+    state: present
+    sysctl_file: /etc/sysctl.d/99-sysctl.conf
+    value: "1"
+    reload: yes
+  with_items:
+    - net.bridge.bridge-nf-call-iptables
+    - net.bridge.bridge-nf-call-arptables
+    - net.bridge.bridge-nf-call-ip6tables

@@ -1,0 +1,11 @@
+docker_version: "19.03"
+
+docker_insecure_registries:
+  - 127.0.0.0/8
+  - 10.0.0.0/8
+  - 172.16.0.0/12
+  - 192.168.0.0/16
+
+http_proxy: ""
+https_proxy: ""
+no_proxy: "localhost,127.0.0.1"

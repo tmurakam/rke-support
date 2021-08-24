@@ -1,0 +1,40 @@
+- name: Check if docker exists?
+  stat:
+    path: /usr/bin/docker
+  register: docker
+
+- name: Install docker-ce
+  shell: curl https://releases.rancher.com/install-docker/{{ docker_version }}.sh | sh
+  when: not docker.stat.exists
+
+- name: Install daemon.json for insecure registries
+  become: yes
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+  notify: restart_docker
+
+- when: http_proxy != ""
+  become: yes
+  block:
+    - name: Create /etc/systemd/system/docker.service.d
+      file:
+        path: /etc/systemd/system/docker.service.d
+        state: directory
+
+    - name: Install http-proxy.conf for docker
+      template:
+        src: http-proxy.conf.j2
+        dest: /etc/systemd/system/docker.service.d/http-proxy.conf
+      notify: restart_docker
+
+- name: Get current user
+  command: whoami
+  register: whoami
+
+- name: Add {{ whoami.stdout }} to docker group
+  become: yes
+  user:
+    name: "{{ whoami.stdout }}"
+    groups: docker
+    append: yes

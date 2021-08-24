@@ -1,0 +1,27 @@
+- when: ansible_os_family == "RedHat"
+  block:
+    - name: Uninstall runc, docker, podman, buildah, etc
+      package:
+        name:
+          - docker
+          - docker-common
+          - docker-client
+          - podman-docker
+          - buildah
+          - podman
+          - podman-catatonit
+          - cockpit-podman
+          - runc
+        state: absent
+
+    - name: Install nfs package
+      package:
+        name: nfs-utils
+        state: present
+
+- when: ansible_os_family == "Debian"
+  block:
+    - name: Uninstall docker-io
+      package:
+        name: docker-io
+        state: absent

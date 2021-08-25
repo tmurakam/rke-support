@@ -1,4 +1,5 @@
-- include_tasks: selinux.yml
-- include_tasks: firewall.yml
-- include_tasks: system.yml
-- include_tasks: packages.yml
+- import_tasks: selinux.yml
+- import_tasks: firewall.yml
+- import_tasks: swapoff.yml
+- import_tasks: system.yml
+- import_tasks: packages.yml

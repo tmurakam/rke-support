@@ -1,0 +1,25 @@
+---
+#- name: Disable swap
+#  sysctl:
+#    name: vm.swappiness
+#    value: '0'
+#    state: present
+#    reload: yes
+
+- name: Remove swapfile from /etc/fstab
+  mount:
+    name: "{{ item }}"
+    fstype: swap
+    state: absent
+  with_items:
+    - swap
+    - none
+
+- name: Check swap
+  command: /sbin/swapon -s
+  register: swapon
+  changed_when: no
+
+- name: Disable swap
+  command: /sbin/swapoff -a
+  when: swapon.stdout

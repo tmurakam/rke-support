@@ -17,7 +17,7 @@ Vagrant.configure("2") do |config|
   # disk size
   #config.disksize.size = '100GB'
 
-  # Mount dsa-installer to home directory
+  # Mount current dir to home directory
   config.vm.synced_folder "./", "/home/vagrant/rke-support", "owner": "vagrant", "group": "vagrant"
 
   # VM spec

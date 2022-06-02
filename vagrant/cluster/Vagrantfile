@@ -1,0 +1,38 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ssh_script = <<EOS
+ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ""
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+EOS
+
+Vagrant.configure("2") do |config|
+  #config.vm.box = "generic/centos7"
+  config.vm.box = "bento/almalinux-8"
+  config.ssh.insert_key = false
+
+  # Mount current dir to home directory
+  config.vm.synced_folder "../../", "/home/vagrant/rke-support", "owner": "vagrant", "group": "vagrant"
+
+  config.vm.define "master-0" do |c|
+    c.vm.hostname = "master-0"
+    c.vm.network "private_network", ip: "192.168.56.10"
+    c.vm.network "forwarded_port", guest: 22, host: 2310, id: "ssh"
+    c.vm.provider "virtualbox" do |vb|
+      vb.memory = "4096"
+      vb.cpus = 2
+    end
+  end
+
+  (0..2).each do |n|
+    config.vm.define "worker-#{n}" do |c|
+      c.vm.hostname = "worker-#{n}"
+      c.vm.network "private_network", ip: "192.168.56.2#{n}"
+      c.vm.network "forwarded_port", guest: 22, host: 2320 + n, id: "ssh"
+      c.vm.provider "virtualbox" do |vb|
+        vb.memory = "3072"
+        vb.cpus = 2
+      end
+    end
+  end
+end

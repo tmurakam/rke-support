@@ -1,0 +1,21 @@
+- name: Install docker-ce repo
+  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  become: yes
+  #environment: "{{ proxy_env }}"
+
+
+- name: Uninstall docker and podman-docker
+  yum:
+    name:
+      - docker
+      - docker-common
+      - docker-client
+      - podman-docker
+    state: absent
+  become: yes
+
+- name: Install docker-ce
+  yum:
+    name: docker-ce
+    state: present
+  become: yes

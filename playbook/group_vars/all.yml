@@ -1,0 +1,2 @@
+# HTTP proxy server
+#http_proxy: "http://proxy.example.com:8080"

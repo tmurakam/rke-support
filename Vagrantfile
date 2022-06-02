@@ -7,7 +7,7 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 EOS
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "generic/centos8" # CentOS 8
+  config.vm.box = "bento/almalinux-8" # AlmaLinux 8
   #config.vm.box = "generic/ubuntu2004" # Ubuntu 20.04
 
   # config.vm.box_check_update = false

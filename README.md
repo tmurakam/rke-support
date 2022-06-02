@@ -2,6 +2,16 @@
 
 # What is this?
 
+RKE1 support ansible playbook and scripts.
+
+Run this ansible playbook before use rke tool.
+
+- Disable SELinux
+- Disable firewalld
+- Disable swap
+- Configure netfilter
+- Install docker CE
+
 ## Requirements
 
 - RHEL7 / CentOS 7
@@ -12,7 +22,7 @@
 
 ## Install ansible
 
-Install python3 ansible.
+Install python3 and ansible.
 
     $ ./install-ansible.sh
 
@@ -28,11 +38,9 @@ Run ansible playbook
     $ vi hosts   # edit inventory file
     $ ansible-playbook -i hosts site.yml
 
-This will install Docker CE, disable, swap, etc on all nodes.
-
 ## Install RKE binary
 
-    $ ./installcli.sh
+    $ ./install-cli.sh
 
 ## Setup RKE cluster
 

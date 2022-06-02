@@ -6,6 +6,12 @@
     state: latest
   become: yes
 
+- name: Create /etc/docker directory
+  become: yes
+  file:
+    path: /etc/docker
+    state: directory
+
 - name: Install daemon.json for insecure registries
   become: yes
   template:

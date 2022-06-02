@@ -12,26 +12,26 @@
     enabled: yes
     state: started
 
-#- name: Install daemon.json for insecure registries
-#  become: yes
-#  template:
-#    src: daemon.json.j2
-#    dest: /etc/docker/daemon.json
-#  notify: restart_docker
+- name: Install daemon.json for insecure registries
+  become: yes
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+  notify: restart_docker
 
-#- when: http_proxy != ""
-#  become: yes
-#  block:
-#    - name: Create /etc/systemd/system/docker.service.d
-#      file:
-#        path: /etc/systemd/system/docker.service.d
-#        state: directory
+- when: http_proxy != ""
+  become: yes
+  block:
+    - name: Create /etc/systemd/system/docker.service.d
+      file:
+        path: /etc/systemd/system/docker.service.d
+        state: directory
 
-#    - name: Install http-proxy.conf for docker
-#      template:
-#        src: http-proxy.conf.j2
-#        dest: /etc/systemd/system/docker.service.d/http-proxy.conf
-#      notify: restart_docker
+    - name: Install http-proxy.conf for docker
+      template:
+        src: http-proxy.conf.j2
+        dest: /etc/systemd/system/docker.service.d/http-proxy.conf
+      notify: restart_docker
 
 - name: Get current user
   command: whoami

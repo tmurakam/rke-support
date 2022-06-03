@@ -1,4 +1,4 @@
-# If you intened to deploy Kubernetes in an air-gapped environment,
+# If you intended to deploy Kubernetes in an air-gapped environment,
 # please consult the documentation on how to configure custom RKE images.
 nodes:
 - address: 192.168.56.20
@@ -133,38 +133,39 @@ authentication:
 addons: ""
 addons_include: []
 system_images:
-  etcd: rancher/mirrored-coreos-etcd:v3.4.15-rancher1
-  alpine: rancher/rke-tools:v0.1.77
-  nginx_proxy: rancher/rke-tools:v0.1.77
-  cert_downloader: rancher/rke-tools:v0.1.77
-  kubernetes_services_sidecar: rancher/rke-tools:v0.1.77
-  kubedns: rancher/mirrored-k8s-dns-kube-dns:1.15.10
-  dnsmasq: rancher/mirrored-k8s-dns-dnsmasq-nanny:1.15.10
-  kubedns_sidecar: rancher/mirrored-k8s-dns-sidecar:1.15.10
-  kubedns_autoscaler: rancher/mirrored-cluster-proportional-autoscaler:1.8.1
-  coredns: rancher/mirrored-coredns-coredns:1.8.0
-  coredns_autoscaler: rancher/mirrored-cluster-proportional-autoscaler:1.8.1
-  nodelocal: rancher/mirrored-k8s-dns-node-cache:1.15.13
-  kubernetes: rancher/hyperkube:v1.20.9-rancher1
-  flannel: rancher/coreos-flannel:v0.13.0-rancher1
+  etcd: rancher/mirrored-coreos-etcd:v3.5.3
+  alpine: rancher/rke-tools:v0.1.80
+  nginx_proxy: rancher/rke-tools:v0.1.80
+  cert_downloader: rancher/rke-tools:v0.1.80
+  kubernetes_services_sidecar: rancher/rke-tools:v0.1.80
+  kubedns: rancher/mirrored-k8s-dns-node-cache:1.21.1
+  dnsmasq: rancher/mirrored-k8s-dns-dnsmasq-nanny:1.21.1
+  kubedns_sidecar: rancher/mirrored-k8s-dns-sidecar:1.21.1
+  kubedns_autoscaler: rancher/mirrored-cluster-proportional-autoscaler:1.8.5
+  coredns: rancher/mirrored-coredns-coredns:1.9.0
+  coredns_autoscaler: rancher/mirrored-cluster-proportional-autoscaler:1.8.5
+  nodelocal: rancher/mirrored-k8s-dns-node-cache:1.21.1
+  kubernetes: rancher/hyperkube:v1.23.6-rancher1
+  flannel: rancher/mirrored-coreos-flannel:v0.15.1
   flannel_cni: rancher/flannel-cni:v0.3.0-rancher6
-  calico_node: rancher/mirrored-calico-node:v3.17.2
-  calico_cni: rancher/mirrored-calico-cni:v3.17.2
-  calico_controllers: rancher/mirrored-calico-kube-controllers:v3.17.2
-  calico_ctl: rancher/mirrored-calico-ctl:v3.17.2
-  calico_flexvol: rancher/mirrored-calico-pod2daemon-flexvol:v3.17.2
-  canal_node: rancher/mirrored-calico-node:v3.17.2
-  canal_cni: rancher/mirrored-calico-cni:v3.17.2
-  canal_controllers: rancher/mirrored-calico-kube-controllers:v3.17.2
-  canal_flannel: rancher/coreos-flannel:v0.13.0-rancher1
-  canal_flexvol: rancher/mirrored-calico-pod2daemon-flexvol:v3.17.2
+  calico_node: rancher/mirrored-calico-node:v3.22.0
+  calico_cni: rancher/mirrored-calico-cni:v3.22.0
+  calico_controllers: rancher/mirrored-calico-kube-controllers:v3.22.0
+  calico_ctl: rancher/mirrored-calico-ctl:v3.22.0
+  calico_flexvol: rancher/mirrored-calico-pod2daemon-flexvol:v3.22.0
+  canal_node: rancher/mirrored-calico-node:v3.22.0
+  canal_cni: rancher/mirrored-calico-cni:v3.22.0
+  canal_controllers: rancher/mirrored-calico-kube-controllers:v3.22.0
+  canal_flannel: rancher/mirrored-flannelcni-flannel:v0.17.0
+  canal_flexvol: rancher/mirrored-calico-pod2daemon-flexvol:v3.22.0
   weave_node: weaveworks/weave-kube:2.8.1
   weave_cni: weaveworks/weave-npc:2.8.1
-  pod_infra_container: rancher/mirrored-pause:3.2
-  ingress: rancher/nginx-ingress-controller:nginx-0.43.0-rancher3
+  pod_infra_container: rancher/mirrored-pause:3.6
+  ingress: rancher/nginx-ingress-controller:nginx-1.2.0-rancher1
   ingress_backend: rancher/mirrored-nginx-ingress-controller-defaultbackend:1.5-rancher1
-  metrics_server: rancher/mirrored-metrics-server:v0.4.1
-  windows_pod_infra_container: rancher/kubelet-pause:v0.1.6
+  ingress_webhook: rancher/mirrored-ingress-nginx-kube-webhook-certgen:v1.1.1
+  metrics_server: rancher/mirrored-metrics-server:v0.6.1
+  windows_pod_infra_container: rancher/mirrored-pause:3.6
   aci_cni_deploy_container: noiro/cnideploy:5.1.1.0.1ae238a
   aci_host_container: noiro/aci-containers-host:5.1.1.0.1ae238a
   aci_opflex_container: noiro/opflex:5.1.1.0.1ae238a
@@ -180,6 +181,7 @@ authorization:
   mode: rbac
   options: {}
 ignore_docker_version: null
+enable_cri_dockerd: null
 kubernetes_version: ""
 private_registries: []
 ingress:
@@ -199,6 +201,7 @@ ingress:
   default_backend: null
   default_http_backend_priority_class_name: ""
   nginx_ingress_controller_priority_class_name: ""
+  default_ingress_class: null
 cluster_name: ""
 cloud_provider:
   name: ""
@@ -213,6 +216,7 @@ bastion_host:
   ssh_key_path: ""
   ssh_cert: ""
   ssh_cert_path: ""
+  ignore_proxy_env_vars: false
 monitoring:
   provider: ""
   options: {}

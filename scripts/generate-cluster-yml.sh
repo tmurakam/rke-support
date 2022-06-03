@@ -7,6 +7,8 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
+export SSH_USER=${SSH_USER:-$(whoami)}
+export CLUSTER_NAME=${CLUSTER_NAME:-mycluster}
 export NETWORK_PLUGIN=${NETWORK_PLUGIN:-canal}
 
 num_nodes=$#
@@ -47,31 +49,31 @@ idx=0
 for node in $nodes; do
     cat <<EOF
 - address: "$node"
-  port: "22"
-  internal_address: ""
+  user: "${SSH_USER}"
+  #port: "22"
+  #internal_address: ""
+  #hostname_override: ""
   role:
 EOF
 
     if [ "$idx" -lt "$NUM_CONTROL" ]; then
-        echo "  - controlplane"
+        echo "    - controlplane"
     fi
     if [ "$idx" -lt "$NUM_ETCD" ]; then
-        echo "  - etcd"
+        echo "    - etcd"
     fi
     if [ "$idx" -ge "$worker_offset" ]; then
-        echo "  - worker"
+        echo "    - worker"
     fi
 
     cat <<EOF    
-  hostname_override: ""
-  user: ubuntu
   docker_socket: /var/run/docker.sock
-  ssh_key: ""
-  ssh_key_path: ~/.ssh/id_rsa
-  ssh_cert: ""
-  ssh_cert_path: ""
-  labels: {}
-  taints: []
+  #ssh_key: ""
+  #ssh_key_path: ~/.ssh/id_rsa
+  #ssh_cert: ""
+  #ssh_cert_path: ""
+  #labels: {}
+  #taints: []
 EOF
     idx=$((idx + 1))
 done

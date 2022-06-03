@@ -14,23 +14,29 @@ Vagrant.configure("2") do |config|
   # Mount current dir to home directory
   config.vm.synced_folder "../../", "/home/vagrant/rke-support", "owner": "vagrant", "group": "vagrant"
 
-  config.vm.define "master-0" do |c|
-    c.vm.hostname = "master-0"
+  config.vm.define "bastion" do |c|
+    c.vm.hostname = "bastion"
     c.vm.network "private_network", ip: "192.168.56.10"
     c.vm.network "forwarded_port", guest: 22, host: 2310, id: "ssh"
     c.vm.provider "virtualbox" do |vb|
-      vb.memory = "4096"
+      vb.memory = "2048"
       vb.cpus = 2
+    end
+    if Vagrant.has_plugin?("vagrant-proxyconf")
+      c.proxy.enabled  = true
+      c.proxy.http     = "#{ENV['http_proxy']}"
+      c.proxy.https    = "#{ENV['https_proxy']}"
+      c.proxy.no_proxy = "#{ENV['no_proxy']},192.168.56.10,192.168.56.20,192.168.56.21,192.168.56.22"
     end
   end
 
   (0..2).each do |n|
-    config.vm.define "worker-#{n}" do |c|
-      c.vm.hostname = "worker-#{n}"
+    config.vm.define "node-#{n}" do |c|
+      c.vm.hostname = "node-#{n}"
       c.vm.network "private_network", ip: "192.168.56.2#{n}"
       c.vm.network "forwarded_port", guest: 22, host: 2320 + n, id: "ssh"
       c.vm.provider "virtualbox" do |vb|
-        vb.memory = "3072"
+        vb.memory = "4096"
         vb.cpus = 2
       end
     end

@@ -14,9 +14,8 @@ Run this ansible playbook before use rke tool.
 
 ## Requirements
 
-- RHEL7 / CentOS 7
-- RHEL8 / AlmaLinux 8
-- Ubuntu 20.04
+- RHEL 8/9
+- Ubuntu 22.04/24.04
 
 # Installation
 

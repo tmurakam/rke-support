@@ -14,8 +14,8 @@ Run this ansible playbook before use rke tool.
 
 ## Requirements
 
-- RHEL 8/9
-- Ubuntu 22.04/24.04
+- RHEL 9
+- Ubuntu 24.04
 
 # Installation
 
@@ -43,15 +43,14 @@ Run ansible playbook
 
 ## Setup RKE cluster
 
-Create RKE cluster config (cluster.yml)
+See details: https://docs.rke2.io/install/quickstart
 
-    $ rke config
+Enable rke2 service (server node)
 
-Deploy RKE cluster
-
-    $ rke up
+    $ sudo systemctl enable rke2-server.service
+    $ sudo systemctl start rke2-server.service
 
 Install kubeconfig
 
     $ mkdir ~/.kube
-    $ cp kube_config_cluster.yml ~/.kube/config
+    $ sudo cat /etc/rancher/rke2/rke2.yaml > ~/.kube/config

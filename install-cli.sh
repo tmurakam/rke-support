@@ -1,24 +1,31 @@
 #!/bin/bash
 
-RKE_VERSION=${RKE_VERSION:-1.3.15}
-KUBECTL_VERSION=${KUBECTL_VERSION:-1.24.4}
+RKE2_VERSION=${RKE2_VERSION:-v1.37.0+rke2r1}
+KUBECTL_VERSION=${KUBECTL_VERSION:-1.37.0}
 
-RKE=rke-${RKE_VERSION}
 KUBECTL=kubectl-${KUBECTL_VERSION}
 
 if [ ! -d .cache ]; then
     mkdir .cache
 fi
 
-if [ ! -x /usr/local/bin/rke ] || [ ! -x /usr/local/bin/${RKE} ]; then
-    echo "===> Install ${RKE}"
-    if [ ! -e ${RKE} ]; then
-        curl -SL https://github.com/rancher/rke/releases/download/v${RKE_VERSION}/rke_linux-amd64 >.cache/${RKE}
+if [ ! -x /usr/local/bin/rke2 ]; then
+    echo "===> Install rke2"
+
+    # update.rke2.io (the installer's channel server) is not reachable (404), and the
+    # installer does not detect that, ending up with version "stable". Resolve the
+    # version from GitHub ourselves instead. Set RKE2_VERSION to pin (e.g. v1.37.0+rke2r1).
+    if [ -z "${RKE2_VERSION}" ]; then
+        RKE2_VERSION=$(curl -sfIL -o /dev/null -w '%{url_effective}' \
+            https://github.com/rancher/rke2/releases/latest | sed -e 's|.*/||')
     fi
-    chmod 755 .cache/${RKE}
-    sudo cp .cache/${RKE} /usr/local/bin/${RKE}
-    sudo /bin/rm /usr/local/bin/rke >/dev/null 2>&1
-    sudo ln -s /usr/local/bin/${RKE} /usr/local/bin/rke
+    case "${RKE2_VERSION}" in
+        v*.*+rke2r*) ;;
+        *) echo "Failed to determine rke2 version: '${RKE2_VERSION}'" >&2; exit 1 ;;
+    esac
+    echo "rke2 version: ${RKE2_VERSION}"
+
+    curl -sfL https://get.rke2.io | sudo env INSTALL_RKE2_VERSION="${RKE2_VERSION}" sh -
 fi
 
 if [ ! -x /usr/local/bin/kubectl ] || [ ! -x /usr/local/bin/${KUBECTL} ]; then
